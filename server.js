@@ -10,7 +10,7 @@ app.get('/', async (req, res) => {
         res.send('No URL found');
     } else {
         try {
-            const browser = await puppeteer.launch({ignoreDefaultArgs: ['--disable-extensions'],});
+            const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
             const page = await browser.newPage();
             await page.goto(`https://${url}`, {waitUntil: 'load', timeout: 0})
             let document = await page.evaluate(() => document.documentElement.outerHTML, {waitUntil: 'load', timeout: 0});
