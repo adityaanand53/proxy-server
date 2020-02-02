@@ -1,8 +1,11 @@
 const expresss = require('express');
 const puppeteer = require('puppeteer');
 const absolutify = require('absolutify');
+const bodyParser = require("body-parser");
 
 const app = expresss();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', async (req, res) => {
     const {url} = req.query;
@@ -26,4 +29,24 @@ app.get('/', async (req, res) => {
       
     }
 });
+app.post("/getPDF", async (req, res) => {
+  const pdf = printPDF(req.body.html);
+  const p = await pdf;
+  res.contentType("application/pdf");
+  res.send(p);
+});
+
+async function printPDF(html) {
+  const browser = await puppeteer.launch({ headless: true });
+  const page = await browser.newPage();
+  await page.setContent(html);
+  const pdf = await page.pdf({
+    format: "A4",
+    preferCSSPageSize: true,
+    printBackground: true
+  });
+  await browser.close();
+  return pdf;
+}
+
 app.listen(process.env.PORT);
