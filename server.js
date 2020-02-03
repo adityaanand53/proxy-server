@@ -56,4 +56,4 @@ async function printPDF(html) {
   return pdf;
 }
 
-app.listen(process.env.PORT || 4200);
+app.listen(process.env.PORT);
