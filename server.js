@@ -2,12 +2,11 @@ const expresss = require("express");
 const puppeteer = require("puppeteer");
 const absolutify = require("absolutify");
 const bodyParser = require("body-parser");
-const cors = require('cors');
 
 const app = expresss();
 app.use(bodyParser.json());
-app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.get("/", async (req, res) => {
   const { url } = req.query;
   if (!url) {
