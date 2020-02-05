@@ -29,7 +29,7 @@ app.post("/getPDF", async (req, res) => {
 async function printPDF(html) {
   console.log("here.. /000");
   const browser = await puppeteer.launch({
-    args: ["--no-sandbox", "--disable-setuid-sandbox"]
+    headless: true
   }).then((res, err) => {
     console.log('into err');
     if(err) {
