@@ -48,7 +48,7 @@ async function printPDF(html) {
   });
  
   const page = await browser.newPage();
-  await page.setContent(html);
+  await page.setContent(html, {timeout: 0});
   const pdf = await page.pdf({
     format: "A4",
     preferCSSPageSize: true,
