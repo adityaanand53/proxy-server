@@ -58,4 +58,5 @@ async function printPDF(html) {
   return pdf;
 }
 
-app.listen(process.env.PORT);
+const server = app.listen(process.env.PORT);
+server.timeout = 100000;
