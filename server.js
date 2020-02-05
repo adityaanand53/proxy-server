@@ -1,52 +1,43 @@
-const expresss = require("express");
+const express = require("express");
 const puppeteer = require("puppeteer");
-const absolutify = require("absolutify");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
-const app = expresss();
+const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 app.get("/", async (req, res) => {
-  const { url } = req.query;
-  if (!url) {
-    res.send("No URL found");
-  } else {
-    try {
-      const browser = await puppeteer.launch({
-        args: ["--no-sandbox", "--disable-setuid-sandbox"]
-      });
-      const page = await browser.newPage();
-      await page.goto(`https://${url}`, { waitUntil: "load", timeout: 0 });
-      let document = await page.evaluate(
-        () => document.documentElement.outerHTML,
-        { waitUntil: "load", timeout: 0 }
-      );
-      document = absolutify(document, `/?url=${url.split("/")[0]}`);
-      res.send(document);
-      browser.close();
-    } catch (err) {
-      console.log("Something went wrong, Error: ", err);
-      res.send("Unable to load page");
-      browser.close();
-    }
-  }
+  console.log("here.. /");
+  res.send("It works");
 });
 
 app.post("/getPDF", async (req, res) => {
+  console.log("here.. /getPDF");
   const pdf = printPDF(req.body.html);
   const p = await pdf;
-  const name  = req.body.name || 'ExternalDataRequest'
-  res.setHeader('Content-disposition', `attachment; filename=${name}.pdf`);
+  const name = req.body.name || "ExternalDataRequest";
+  res.setHeader("Content-disposition", `attachment; filename=${name}.pdf`);
   res.contentType("application/pdf");
+  console.log("here.. /getPDF222");
+
   res.send(p);
 });
 
 async function printPDF(html) {
+  console.log("here.. /000");
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
+  }).then((res, err) => {
+    console.log('into err');
+    if(err) {
+      console.log('err', err);
+    }
   });
- 
+  console.log("here.. /111");
+
   const page = await browser.newPage();
   await page.setContent(html);
   const pdf = await page.pdf({
@@ -58,4 +49,4 @@ async function printPDF(html) {
   return pdf;
 }
 
-app.listen(process.env.PORT);
+app.listen(process.env.PORT || 3000);
