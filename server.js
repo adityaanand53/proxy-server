@@ -30,11 +30,6 @@ async function printPDF(html) {
   console.log("here.. /000");
   const browser = await puppeteer.launch({
     args: ["--no-sandbox", "--disable-setuid-sandbox"]
-  }).then((res, err) => {
-    console.log('into err');
-    if(err) {
-      console.log('err', err);
-    }
   });
   console.log("here.. /111");
 
