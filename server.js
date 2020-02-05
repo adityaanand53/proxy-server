@@ -15,24 +15,21 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/getPDF", async (req, res) => {
-  console.log("here.. /getPDF");
   const pdf = printPDF(req.body.html);
   const p = await pdf;
   const name = req.body.name || "ExternalDataRequest";
   res.setHeader("Content-disposition", `attachment; filename=${name}.pdf`);
   res.contentType("application/pdf");
-  console.log("here.. /getPDF222");
-
   res.send(p);
 });
 
 async function printPDF(html) {
-  console.log("here.. /000");
-  const browser = await puppeteer.launch({
-    args: ["--no-sandbox", "--disable-setuid-sandbox"]
+  const browser = await puppeteer.launch({ 
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+  ]
   });
-  console.log("here.. /111");
-
   const page = await browser.newPage();
   await page.setContent(html);
   const pdf = await page.pdf({
