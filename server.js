@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const app = expresss();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 app.get("/", async (req, res) => {
   const { url } = req.query;
