@@ -2,9 +2,11 @@ const express = require("express");
 const puppeteer = require("puppeteer");
 const absolutify = require("absolutify");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
